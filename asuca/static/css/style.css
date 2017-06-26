@@ -1,9 +1,14 @@
 .container {
         width: 500px;
         clear: both;
+        font-weight:bold;
     }
 
 .container input {
         width: 100%;
         clear: both;
+    }
+
+.container.bold-my-labels label{
+    font-weight:bold;
     }

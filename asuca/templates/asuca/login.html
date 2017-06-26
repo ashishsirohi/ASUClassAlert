@@ -7,8 +7,21 @@
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <script src="{% static 'js/login.js' %}"></script>
 
+<script>
+    {% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            alert(error);
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        alert(error);
+    {% endfor %}
+{% endif %}
+</script>
+
 <body onload="onload()">
-  <form action="/action_page.php" id="login">
+  <!--<form action="/action_page.php" id="login">
   <div class="container">
       <div>
         <label><b>Username</b></label>
@@ -29,9 +42,41 @@
       <div>
           <a href="#">Forgot password?</a>
       </div>
+  </form>-->
+  <form action="/login/" method="post" id="login">{% csrf_token %}
+      {{ Error }}
+      <div class="container bold-my-labels">
+        {{ login_form }}
+      </div>
+      <div>
+          <input type="checkbox" checked="checked"> Remember me
+      </div>
+      <div>
+          <button type="submit">Login</button>
+          <button type="submit" onclick="showSignupForm()">Sign Up</button>
+      </div>
+      <div>
+          <a href="#">Forgot password?</a>
+      </div>
   </form>
 
-  <form action="/action_page.php" id="signup">
+  <form action="/signup/" method="post" id="signup">{% csrf_token %}
+      <div class="container bold-my-labels">
+        {% csrf_token %}
+        {{ signup_form }}
+      </div>
+      <div>
+          <input type="checkbox" checked="checked"> Remember me
+          <br>By creating an account you agree to our <a href="#">Terms & Privacy</a>
+      </div>
+      <div>
+          <button type="submit" class="signupbtn">Sign Up</button>
+          <button type="button" onclick="showLoginForm()">Back to Login Page</button>
+      </div>
+  </form>
+
+
+  <!--<form action="/action_page.php" id="signup">
   <div class="container">
       <div>
           <label><b>Name</b></label>
@@ -62,6 +107,6 @@
           <button type="submit" class="signupbtn">Sign Up</button>
           <button type="submit" onclick="showLoginForm()">Back to Login Page</button>
       </div>
-  </form>
+  </form>-->
 </body>
 </html>
