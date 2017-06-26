@@ -20,7 +20,7 @@
 {% endif %}
 </script>
 
-<body onload="onload()">
+<body>
   <!--<form action="/action_page.php" id="login">
   <div class="container">
       <div>
@@ -53,27 +53,13 @@
       </div>
       <div>
           <button type="submit">Login</button>
-          <button type="submit" onclick="showSignupForm()">Sign Up</button>
+          <button type="submit" onclick="location.href='{% url 'signupUser' %}'">Sign Up</button>
       </div>
       <div>
           <a href="#">Forgot password?</a>
       </div>
   </form>
 
-  <form action="/signup/" method="post" id="signup">{% csrf_token %}
-      <div class="container bold-my-labels">
-        {% csrf_token %}
-        {{ signup_form }}
-      </div>
-      <div>
-          <input type="checkbox" checked="checked"> Remember me
-          <br>By creating an account you agree to our <a href="#">Terms & Privacy</a>
-      </div>
-      <div>
-          <button type="submit" class="signupbtn">Sign Up</button>
-          <button type="button" onclick="showLoginForm()">Back to Login Page</button>
-      </div>
-  </form>
 
 
   <!--<form action="/action_page.php" id="signup">

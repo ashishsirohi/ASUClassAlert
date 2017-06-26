@@ -7,10 +7,9 @@ from django.contrib.postgres.fields import ArrayField
 # Create your models here.
 class userinfo(models.Model):
     username = models.TextField()
-    passwd = models.TextField()
     emailid = models.TextField()
     phone = models.BigIntegerField()
-    courses = ArrayField(models.BigIntegerField())
+    courses = ArrayField(models.BigIntegerField(), null=True)
 
 class courses(models.Model):
     courseid = models.BigIntegerField()

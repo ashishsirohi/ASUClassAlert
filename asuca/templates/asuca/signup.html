@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<script src="{% static 'js/login.js' %}"></script>
+
+<body>
+<form action="/signup/" method="post" id="signup">{% csrf_token %}
+    {{ Error }}
+      <div class="container bold-my-labels">
+        {% csrf_token %}
+        {{ signup_form }}
+      </div>
+      <div>
+          <input type="checkbox" checked="checked"> Remember me
+          <br>By creating an account you agree to our <a href="#">Terms & Privacy</a>
+      </div>
+      <div>
+          <button type="submit" class="signupbtn">Sign Up</button>
+          <button type="button" onclick="location.href='{% url 'loginUser' %}'">Back to Login Page</button>
+      </div>
+  </form>
+
+</body>
+</html>

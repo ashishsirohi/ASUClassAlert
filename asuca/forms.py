@@ -1,7 +1,7 @@
 from django import forms
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(label='Email', widget=forms.TextInput(attrs={'placeholder': 'Enter Email'}))
+    email = forms.CharField(label='Username', widget=forms.TextInput(attrs={'placeholder': 'Enter Username'}))
     passwd = forms.CharField(label='Password',widget=forms.PasswordInput(attrs={'placeholder':'Enter Password'}))
 
 class SignupForm(forms.Form):
