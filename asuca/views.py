@@ -8,18 +8,19 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 
-from .forms import LoginForm, SignupForm
+from .forms import LoginForm, SignupForm, SearchForm
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 from asuca.models import userinfo
+from searchcourse import check_status
 
 # Create your views here.
 def home(request):
     username = request.session.get('username')
     msg = request.session.get('msg')
-    print username
-    return render(request, 'asuca/home.html', {'uname':username, 'msg':msg})
+    form = SearchForm()
+    return render(request, 'asuca/home.html', {'uname':username, 'msg':msg, 'form' : form})
 
 def loginUser(request):
     if request.method == 'POST':
@@ -30,7 +31,7 @@ def loginUser(request):
             user = authenticate(request, username=uname, password=passwd)
             if user is not None:
                 login(request, user)
-                msg = "Logged in successfully!!"
+                msg = "true"
                 request.session['username'] = uname
                 request.session['msg'] = msg
                 return HttpResponseRedirect(reverse('home'))
@@ -67,7 +68,7 @@ def signupUser(request):
             userinfo.objects.create(username = uname, emailid = email, phone = pnum)
             user = authenticate(request, username=uname, password=passwd1)
             login(request, user)
-            msg = "User created and logged in successfully!!"
+            msg = "true"
             request.session['username'] = uname
             request.session['msg'] = msg
             return HttpResponseRedirect(reverse('home'))
@@ -75,6 +76,33 @@ def signupUser(request):
     else:
         form = SignupForm()
     return render(request, 'asuca/signup.html', {'signup_form': form})
+
+def logoutUser(request):
+    logout(request)
+    msg = "false"
+    request.session['msg'] = msg
+    return HttpResponseRedirect(reverse('home'))
+
+def searchcourse(request):
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            cid = form.cleaned_data['courseid']
+            term = '2177'
+            status = check_status(cid, term)
+            print "Hello"
+            print status
+            if len(status)>0:
+                request.session['prof'] = status[0]
+                request.session['course'] = status[1]
+                request.session['seats'] = status[2]
+
+    return HttpResponseRedirect(reverse('searchresult'))
+
+def searchResult(request):
+    return render(request, 'asuca/result.html', {'name': request.session.get('username'), 'course': request.session.get('course'), 'prof': request.session.get('prof'), 'seats': request.session.get('seats')})
+
+
 
 
 

@@ -1,14 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Home</title>
 </head>
-<body>
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<script src="{% static 'js/home.js' %}"></script>
+
+<script>
+    var l_status = {{ msg }};
+
+</script>
+
+
+<body onload="login_status(l_status)">
 
 <h2>Homepage</h2>
-    {{ msg }}
-  <p>Hello {{ uname }}!</p>
+
+    <p>Hello {{ uname }}!</p>
+    <button type="submit" onclick="location.href='{% url 'loginUser' %}'" id="ulogin">Login</button>
+    <button type="submit" onclick="location.href='{% url 'signupUser' %}'" id="usignup">Signup</button>
+    <button type="submit" onclick="location.href='{% url 'logoutUser' %}'" id="ulogout">Logout</button>
+
+<form action="/search/" method="post" id="search_c">{% csrf_token %}
+    <div class="container bold-my-labels">
+        {{ form }}
+    </div>
+
+    <div>
+          <button type="submit">Get Current Status</button>
+    </div>
+</form>
 
 </body>
 </html>
