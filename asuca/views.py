@@ -12,8 +12,11 @@ from .forms import LoginForm, SignupForm, SearchForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
-from asuca.models import userinfo
+from asuca.models import userinfo, courses
 from searchcourse import check_status
+
+from django.db.models import F
+from django.db.models.expressions import CombinedExpression, Value
 
 # Create your views here.
 def home(request):
@@ -65,7 +68,7 @@ def signupUser(request):
                 msg = "User already exist!!"
                 return render(request, 'asuca/signup.html', {'signup_form': form, "Error": msg})
 
-            userinfo.objects.create(username = uname, emailid = email, phone = pnum)
+            userinfo.objects.create(username = uname, emailid = email, phone = pnum, courses=[])
             user = authenticate(request, username=uname, password=passwd1)
             login(request, user)
             msg = "true"
@@ -88,21 +91,46 @@ def searchcourse(request):
         form = SearchForm(request.POST)
         if form.is_valid():
             cid = form.cleaned_data['courseid']
+            sub = form.cleaned_data['subject']
+            sub_id = form.cleaned_data['subj_num']
             term = '2177'
             status = check_status(cid, term)
-            print "Hello"
+            course_name = str(sub)+str(sub_id)
+            #print "Hello"
             print status
             if len(status)>0:
                 request.session['prof'] = status[0]
                 request.session['course'] = status[1]
                 request.session['seats'] = status[2]
+                request.session['cid'] = cid
+                request.session['av'] = 1
+            else:
+                request.session['cid'] = cid
+                request.session['av'] = 0
+                request.session['course'] = course_name
+
 
     return HttpResponseRedirect(reverse('searchresult'))
 
 def searchResult(request):
-    return render(request, 'asuca/result.html', {'name': request.session.get('username'), 'course': request.session.get('course'), 'prof': request.session.get('prof'), 'seats': request.session.get('seats')})
+    return render(request, 'asuca/result.html', {'av': request.session.get('av'), 'cid': request.session.get('cid'),'name': request.session.get('username'), 'course': request.session.get('course'), 'prof': request.session.get('prof'), 'seats': request.session.get('seats')})
 
+def notifyUser(request):
+    cid =request.session.get('cid')
+    uname = request.session.get('username')
+    record = userinfo.objects.get(username=uname)
+    record.courses.append(cid)
+    record.save()
 
+    record = courses.objects.filter(courseid=cid).exists()
+    if(record):
+        record = courses.objects.get(courseid=cid)
+        record.users.append(uname)
+        record.save()
+    else:
+        courses.objects.create(courseid=cid, term=2177, users=[uname])
+
+    return HttpResponseRedirect(reverse('home'))
 
 
 

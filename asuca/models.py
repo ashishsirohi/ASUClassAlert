@@ -14,5 +14,5 @@ class userinfo(models.Model):
 class courses(models.Model):
     courseid = models.BigIntegerField()
     term = models.BigIntegerField()
-    users = ArrayField(models.BigIntegerField())
+    users = ArrayField(models.TextField())
 

@@ -2,11 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Search Result</title>
 </head>
-<body>
 
-<h3>Hi {{ name }}, Prof. {{ prof }} have {{ seats }} seats open in his {{ course }} class.</h3>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<script src="{% static 'js/result.js' %}"></script>
+
+<script>
+    var seats = {{ seats }};
+    var cid = {{ cid }};
+    var avl = {{ av }};
+</script>
+
+<body onload="result_status(seats, cid, avl)">
+
+    <h3 id="av">Hi {{ name }}, Prof. {{ prof }} have {{ seats }} seats open in his {{ course }} class.</h3>
+
+    <h3 id="na">Hi {{ name }}, Unfortunately course {{ course }} doesn't have any seats open now but we can notify you as soon as it is available. Please click <b>Notify me</b> button below in order to recieve notification.</h3>
+
+    <button type="submit" onclick="location.href='{% url 'notifyUser' %}'" id="notify">Notify me</button>
+    <button type="submit" onclick="window.open('https://webapp4.asu.edu/catalog/classlist?k={{ cid }}&t=2177&e=all&hon=F')" id="reg">Register Now</button>
+
+    <h3 id="no_cid">Hi, Please click <a href='{% url 'home' %}'>here</a> to search the availablity of any course.</h3>
 
 </body>
 </html>

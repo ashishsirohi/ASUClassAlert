@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^logout/', views.logoutUser, name='logoutUser'),
     url(r'^search/', views.searchcourse, name='searchcourse'),
     url(r'^result/', views.searchResult, name='searchresult'),
+    url(r'^notify/', views.notifyUser, name='notifyUser'),
     #url(r'^login/$', auth_views.login, name='login'),
     #url(r'^logout/$', auth_views.logout, name='logout'),
     #url(r'^oauth/', include('social_django.urls', namespace='social')),
