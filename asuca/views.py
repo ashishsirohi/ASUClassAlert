@@ -15,8 +15,7 @@ from django.contrib.auth import authenticate, login, logout
 from asuca.models import userinfo, courses
 from searchcourse import check_status
 
-from django.db.models import F
-from django.db.models.expressions import CombinedExpression, Value
+import json
 
 # Create your views here.
 def home(request):
@@ -149,6 +148,11 @@ def myCourses(request):
     return render(request, 'asuca/mycourses.html', {'mylist': mylist})
 
 def removeNotification(request):
+    if request.method == 'GET':
+        cid = request.GET.get('id', '')
+        uname = request.session.get('username')
+        print cid
+        print uname
     return HttpResponseRedirect(reverse('myCourses'))
 
 
