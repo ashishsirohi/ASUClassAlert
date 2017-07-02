@@ -119,18 +119,37 @@ def notifyUser(request):
     cid =request.session.get('cid')
     uname = request.session.get('username')
     record = userinfo.objects.get(username=uname)
-    record.courses.append(cid)
-    record.save()
+    print cid
+    print record.courses
+    if int(cid) in record.courses:
+        print "Already have course in notification list"
+    else:
+        print "Added"
+        record.courses.append(cid)
+        record.save()
 
     record = courses.objects.filter(courseid=cid).exists()
     if(record):
         record = courses.objects.get(courseid=cid)
-        record.users.append(uname)
-        record.save()
+        if uname in record.users:
+            print "Already in the notification list"
+        else:
+            print "Hello"
+            record.users.append(uname)
+            record.save()
     else:
         courses.objects.create(courseid=cid, term=2177, users=[uname])
 
-    return HttpResponseRedirect(reverse('home'))
+    return HttpResponseRedirect(reverse('myCourses'))
+
+def myCourses(request):
+    uname = request.session.get('username')
+    record = userinfo.objects.get(username=uname)
+    mylist = record.courses
+    return render(request, 'asuca/mycourses.html', {'mylist': mylist})
+
+def removeNotification(request):
+    return HttpResponseRedirect(reverse('myCourses'))
 
 
 

@@ -6,6 +6,7 @@ function login_status(status) {
     //alert(status);
     if(!status){
         document.getElementById("ulogout").style.display = "none";
+        document.getElementById("mycourses").style.display = "none";
     }
     else{
         document.getElementById("ulogin").style.display = "none";

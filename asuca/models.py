@@ -9,7 +9,7 @@ class userinfo(models.Model):
     username = models.TextField()
     emailid = models.TextField()
     phone = models.BigIntegerField()
-    courses = ArrayField(models.BigIntegerField(), null=True)
+    courses = ArrayField(models.IntegerField(), null=True)
 
 class courses(models.Model):
     courseid = models.BigIntegerField()

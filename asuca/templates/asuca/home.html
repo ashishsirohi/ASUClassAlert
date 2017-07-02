@@ -15,12 +15,13 @@
 
 <body onload="login_status(l_status)">
 
-<h2>Homepage</h2>
+<h2>ASU Class Notifier</h2>
 
     <p>Hello {{ uname }}!</p>
     <button type="submit" onclick="location.href='{% url 'loginUser' %}'" id="ulogin">Login</button>
     <button type="submit" onclick="location.href='{% url 'signupUser' %}'" id="usignup">Signup</button>
     <button type="submit" onclick="location.href='{% url 'logoutUser' %}'" id="ulogout">Logout</button>
+    <button type="submit" onclick="location.href='{% url 'myCourses' %}'" id="mycourses">My Courses</button>
 
 <form action="/search/" method="post" id="search_c">{% csrf_token %}
     <div class="container bold-my-labels">
