@@ -10,6 +10,7 @@ $(document).ready(function () {
                   url:'/removenotification/?id='+course,
                   success:function () {
                       alert(course+" - Course removed successfully!!");
+                      location.reload();
                   },
                   error:function () {
                       alert("Something went wrong!!!");

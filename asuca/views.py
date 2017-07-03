@@ -153,6 +153,18 @@ def removeNotification(request):
         uname = request.session.get('username')
         print cid
         print uname
+        record = userinfo.objects.get(username=uname)
+        record.courses.remove(int(cid))
+        record.save()
+
+        record = courses.objects.get(courseid=cid)
+        record.users.remove(uname)
+        record.save()
+
+        record = courses.objects.get(courseid=cid)
+        if len(record.users) == 0:
+            record.delete()
+
     return HttpResponseRedirect(reverse('myCourses'))
 
 
