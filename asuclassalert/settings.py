@@ -26,9 +26,9 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '269666998515-mudabpt16r0ejo60i7qsqt7kh8p18j4p.a
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '5eRVdupqQI4zanL07fWaBL-M'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

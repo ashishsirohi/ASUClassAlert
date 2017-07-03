@@ -8,15 +8,12 @@
 
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
-<script src="{% static 'js/result.js' %}"></script>
 <script src="{% static 'js/home.js' %}"></script>
 
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
 <script>
-    var seats = {{ seats }};
-    var cid = {{ cid }};
-    var avl = {{ av }};
+    var avl = {{ av }}
 </script>
 
 <script>
@@ -26,29 +23,37 @@
     {% endif %}
 </script>
 
-<body onload="result_status(seats, cid, avl); login_status(status);">
+<body onload="login_status(status)">
 {% include 'asuca/base.html' %}
 
     <div class="container bold-my-labels">
     {% if uname %}
-        <h3 id="av">Hi {{ uname }},<br><br>Prof. {{ prof }} have {{ seats }} seats open in his {{ course }} class.</h3>
-
-        <h3 id="na">Hi {{ uname }},<br><br>Unfortunately, course {{ course }} doesn't have any seats open now but we can notify you as soon as it is available. Please click <b>Notify me</b> button below in order to recieve notification.</h3>
-
-        <button class="btn btn-primary" type="submit" onclick="location.href='{% url 'notifyUser' %}'" id="notify">Notify me</button>
+        {% if av %}
+            <h3 id="uname_av">Hi <b>{{ uname }}</b>,<br><br>Prof. {{ prof }} have <b style="color: green">{{ seats }} seats</b> open in {{ course }} class.</h3>
+            <button class="btn btn-primary btn-lg" type="submit" onclick="window.open('https://webapp4.asu.edu/catalog/classlist?k={{ cid }}&t=2177&e=all&hon=F')" id="reg">Register Now</button>
+        {% endif %}
+        {% if not av %}
+            <h3 id="uname_na">Hi <b>{{ uname }}</b>,<br><br>Unfortunately, course {{ course }}/{{ cid }} doesn't have any seats open now but we can notify you as soon as it is available. Please click <b style="color: red">Notify me</b> button below in order to recieve notification.</h3><br>
+            <button class="btn btn-primary btn-lg" type="submit" onclick="location.href='{% url 'notifyUser' %}'" id="notify">Notify me</button>
+        {% endif %}
     {% endif %}
 
     {% if not uname %}
-        <h3 id="av">Hi,<br><br>Prof. {{ prof }} have {{ seats }} seats open in his {{ course }} class.</h3>
+        {% if av %}
+            <h3 id="av">Hi,<br><br>Prof. {{ prof }} have <b style="color: green">{{ seats }} seats</b> open in {{ course }} class.</h3>
+        {% endif %}
+        {% if not av %}
+            <h3 id="na">Hi,<br><br>Unfortunately, course {{ course }} doesn't have any seats open now but we can notify you as soon as it is available. Please click <b style="color: red">Notify me</b> button below in order to recieve notification.</h3>
+            <h3>You are not logged in. Please <a href='{% url 'loginUser' %}'>Login</a> and click on notify me to get notification for the above course.</h3>
+        {% endif %}
 
-        <h3 id="na">Hi,<br><br>Unfortunately, course {{ course }} doesn't have any seats open now but we can notify you as soon as it is available. Please click <b>Notify me</b> button below in order to recieve notification.</h3>
-
-        <h3>You are not logged in. Please <a href='{% url 'loginUser' %}'>Login</a> and click on notify me to get notification for the above course.</h3>
     {% endif %}
 
-    <button class="btn btn-primary" type="submit" onclick="window.open('https://webapp4.asu.edu/catalog/classlist?k={{ cid }}&t=2177&e=all&hon=F')" id="reg">Register Now</button>
+    <button class="btn btn-primary btn-lg" type="submit" onclick="location.href='{% url 'home' %}'" id="other">Search Another Class</button>
+    {% if not cid %}
+        <h3 id="no_cid">Hi, Please click <a href='{% url 'home' %}'>here</a> to search the availablity of any course.</h3>
+    {% endif %}
 
-    <h3 id="no_cid">Hi, Please click <a href='{% url 'home' %}'>here</a> to search the availablity of any course.</h3>
 
     </div>
 

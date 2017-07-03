@@ -2,10 +2,11 @@
         width: 500px;
         clear: both;
         font-weight:bold;
+        font-size: larger;
     }
 
 .container input {
-        width: 100%;
+        width: 50%;
         clear: both;
     }
 
@@ -25,4 +26,9 @@
 .content {
     max-width: 500px;
     margin: auto;
+}
+
+.navbar-custom {
+    color: #FFFFFF;
+    background-color: #428bca;
 }

@@ -25,6 +25,10 @@ def home(request):
     return render(request, 'asuca/home.html', {'uname':username, 'msg':msg, 'form' : form})
 
 def loginUser(request):
+    if request.method == 'GET':
+        if request.session.get('username') is not None:
+            return HttpResponseRedirect(reverse('home'))
+
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -49,6 +53,10 @@ def loginUser(request):
     return render(request, 'asuca/login.html', {'login_form': form, 'uname': request.session.get('username'),})
 
 def signupUser(request):
+    if request.method == 'GET':
+        if request.session.get('username') is not None:
+            return HttpResponseRedirect(reverse('home'))
+
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
@@ -95,7 +103,6 @@ def searchcourse(request):
             term = '2177'
             status = check_status(cid, term)
             course_name = str(sub)+str(sub_id)
-            #print "Hello"
             print status
             if len(status)>0:
                 request.session['prof'] = status[0]
@@ -108,16 +115,18 @@ def searchcourse(request):
                 request.session['av'] = 0
                 request.session['course'] = course_name
 
-
     return HttpResponseRedirect(reverse('searchresult'))
 
 def searchResult(request):
-    return render(request, 'asuca/result.html', {'av': request.session.get('av'), 'cid': request.session.get('cid'),'uname': request.session.get('username'), 'course': request.session.get('course'), 'prof': request.session.get('prof'), 'seats': request.session.get('seats')})
+    if request.session.get('cid'):
+        return render(request, 'asuca/result.html', {'av': request.session.get('av'), 'cid': request.session.get('cid'),'uname': request.session.get('username'), 'course': request.session.get('course'), 'prof': request.session.get('prof'), 'seats': request.session.get('seats')})
+    else:
+        return HttpResponseRedirect(reverse('home'))
 
 def notifyUser(request):
     cid =request.session.get('cid')
     uname = request.session.get('username')
-    if uname:
+    if uname and cid:
         record = userinfo.objects.get(username=uname)
         print cid
         print record.courses
@@ -157,7 +166,7 @@ def removeNotification(request):
         uname = request.session.get('username')
         print cid
         print uname
-        if uname:
+        if uname and cid:
             record = userinfo.objects.get(username=uname)
             record.courses.remove(int(cid))
             record.save()

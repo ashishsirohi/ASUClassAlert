@@ -25,18 +25,18 @@
     {% include 'asuca/base.html' with active_tab='home' %}
     <div class="container bold-my-labels">
     {% if uname %}
-        <h3>Hello <b>{{ uname }}</b></h3>
+        <h3>Hi <b>{{ uname }},</b></h3>
     {% endif %}
     </div>
-
 <form action="/search/" method="post" id="search_c">{% csrf_token %}
     <div class="container bold-my-labels">
-        <h4>Search for the Fall 2017 courses availability below:<br></h4>
+        <h4>Search for the <b style="color: green">Fall 2017</b> courses availability below:<br></h4>
+        <hr>
         {{ form }}
     </div>
     <br>
     <div class="container bold-my-labels">
-          <button class="btn btn-primary" type="submit">Get Current Status</button>
+          <button class="btn btn-primary btn-lg" type="submit">Get Current Status</button>
     </div>
 </form>
 
