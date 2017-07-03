@@ -11,4 +11,18 @@
 
 .container.bold-my-labels label{
     font-weight:bold;
+    align-content: center;
     }
+
+.floatleft {
+    float:left;
+}
+
+.floatright {
+    float:right;
+}
+
+.content {
+    max-width: 500px;
+    margin: auto;
+}

@@ -1,26 +1,45 @@
+{% include 'asuca/header.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <title>Signup</title>
 </head>
 
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <script src="{% static 'js/login.js' %}"></script>
+<script src="{% static 'js/home.js' %}"></script>
 
-<body>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<script>
+    var status = 0;
+    {% if uname %}
+        var status = 1;
+    {% endif %}
+</script>
+
+<body onload="login_status(status)">
+{% include 'asuca/base.html' with active_tab='signup' %}
 <form action="/signup/" method="post" id="signup">{% csrf_token %}
-    {{ Error }}
       <div class="container bold-my-labels">
+        {% if Error %}
+            <b style="color: red">{{ Error }}</b>
+            <br>
+        {% endif %}
+
         {% csrf_token %}
         {{ signup_form }}
       </div>
-      <div>
+      <div style="display: none;">
           <input type="checkbox" checked="checked"> Remember me
           <br>By creating an account you agree to our <a href="#">Terms & Privacy</a>
       </div>
-      <div>
-          <button type="submit" class="signupbtn">Sign Up</button>
-          <button type="button" onclick="location.href='{% url 'loginUser' %}'">Back to Login Page</button>
+        <br>
+      <div class="container bold-my-labels">
+          <button type="submit" class="signupbtn btn btn-primary">Sign Up</button>
+          <button type="button" class="btn btn-primary" onclick="location.href='{% url 'loginUser' %}'">Back to Login Page</button>
       </div>
   </form>
 

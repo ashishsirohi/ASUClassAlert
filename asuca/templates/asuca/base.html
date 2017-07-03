@@ -1,0 +1,15 @@
+<nav class="navbar navbar-default container bold-my-labels">
+        <div class="container-fluid">
+            <!-- Menu Items -->
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="{% if active_tab == 'home' %} active{% endif %}"><a href="{% url 'home' %}">Home</a></li>
+                    <li id="mycourses" class="{% if active_tab == 'mycourses' %} active{% endif %}"><a href="{% url 'myCourses' %}">My Courses</a></li>
+                    <li id="ulogout" class="{% if active_tab == 'logout' %} active{% endif %}"><a href="{% url 'logoutUser' %}">Logout</a></li>
+                    <li id="ulogin" class="{% if active_tab == 'login' %} active{% endif %}"><a href="{% url 'loginUser' %}">Login</a></li>
+                    <li id="usignup" class="{% if active_tab == 'signup' %} active{% endif %}"><a href="{% url 'signupUser' %}">Sign Up</a></li>
+                </ul>
+            </div>
+
+        </div>
+</nav>

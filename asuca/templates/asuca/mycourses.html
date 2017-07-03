@@ -1,23 +1,47 @@
+{% include 'asuca/header.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>My Course</title>
 </head>
 
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="{% static 'js/mycourses.js' %}"></script>
+<script src="{% static 'js/home.js' %}"></script>
 
-<body>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
-<div>
-{% for i in mylist %}
+<script>
+    var status = 0;
+    {% if uname %}
+        var status = 1;
+    {% endif %}
+</script>
+
+<body onload="login_status(status)">
+{% include 'asuca/base.html' with active_tab='mycourses'%}
+<div class="container bold-my-labels">
+{% if uname %}
+    {% if mylist|length > 0 %}
+    {% for i in mylist %}
     <div>
-        {{ i }}
-        <button type="submit" class="rnotif" value={{ i }}>Remove from my notification list</button>
+        <h3><b>{{ i }}</b></h3>
+        <button type="submit" class="rnotif btn btn-primary" value={{ i }}>Remove from my notification list</button>
     </div>
 {% endfor %}
+{% endif %}
+    {% if mylist|length == 0 %}
+        <h3>Hi {{ uname }},<br><br>Currently, you don't have any course in your notification list.</h3>
+    {% endif %}
+{% endif %}
+
+{% if not uname %}
+    <h3>Hi, you are not logged in. Please <a href='{% url 'loginUser' %}'>Login</a> to see your course list.</h3>
+{% endif %}
+
 </div>
 
 </body>

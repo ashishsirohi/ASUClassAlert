@@ -1,35 +1,42 @@
+{% include 'asuca/header.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <title>Home</title>
 </head>
 
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <script src="{% static 'js/home.js' %}"></script>
 
-<script>
-    var l_status = {{ msg }};
 
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<script>
+    var status = 0;
+    {% if uname %}
+        var status = 1;
+    {% endif %}
 </script>
 
 
-<body onload="login_status(l_status)">
-
-<h2>ASU Class Notifier</h2>
-
-    <p>Hello {{ uname }}!</p>
-    <button type="submit" onclick="location.href='{% url 'loginUser' %}'" id="ulogin">Login</button>
-    <button type="submit" onclick="location.href='{% url 'signupUser' %}'" id="usignup">Signup</button>
-    <button type="submit" onclick="location.href='{% url 'logoutUser' %}'" id="ulogout">Logout</button>
-    <button type="submit" onclick="location.href='{% url 'myCourses' %}'" id="mycourses">My Courses</button>
+<body onload="login_status(status)">
+    {% include 'asuca/base.html' with active_tab='home' %}
+    <div class="container bold-my-labels">
+    {% if uname %}
+        <h3>Hello <b>{{ uname }}</b></h3>
+    {% endif %}
+    </div>
 
 <form action="/search/" method="post" id="search_c">{% csrf_token %}
     <div class="container bold-my-labels">
+        <h4>Search for the Fall 2017 courses availability below:<br></h4>
         {{ form }}
     </div>
-
-    <div>
-          <button type="submit">Get Current Status</button>
+    <br>
+    <div class="container bold-my-labels">
+          <button class="btn btn-primary" type="submit">Get Current Status</button>
     </div>
 </form>
 

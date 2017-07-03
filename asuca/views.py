@@ -41,12 +41,12 @@ def loginUser(request):
             else:
                 form = LoginForm()
                 form2 = SignupForm()
-                return render(request, 'asuca/login.html', {'login_form': form, 'signup_form': form2, "Error":"Username or Password is not correct!! Try again!!"})
+                return render(request, 'asuca/login.html', {'login_form': form, 'uname': request.session.get('username'), 'signup_form': form2, "Error":"Username or Password is not correct!! Try again!!"})
         else:
             messages.error(request, "Error")
     else:
         form = LoginForm()
-    return render(request, 'asuca/login.html', {'login_form': form})
+    return render(request, 'asuca/login.html', {'login_form': form, 'uname': request.session.get('username'),})
 
 def signupUser(request):
     if request.method == 'POST':
@@ -60,12 +60,12 @@ def signupUser(request):
 
             if passwd1 != passwd2:
                 msg = "Both passwords didn't match"
-                return render(request, 'asuca/signup.html', {'signup_form': form, "Error":msg})
+                return render(request, 'asuca/signup.html', {'signup_form': form, "Error":msg, 'uname': request.session.get('username')})
             try:
                 User.objects.create_user(uname, email, passwd1)
             except IntegrityError:
                 msg = "User already exist!!"
-                return render(request, 'asuca/signup.html', {'signup_form': form, "Error": msg})
+                return render(request, 'asuca/signup.html', {'signup_form': form, "Error": msg, 'uname': request.session.get('username')})
 
             userinfo.objects.create(username = uname, emailid = email, phone = pnum, courses=[])
             user = authenticate(request, username=uname, password=passwd1)
@@ -77,7 +77,7 @@ def signupUser(request):
 
     else:
         form = SignupForm()
-    return render(request, 'asuca/signup.html', {'signup_form': form})
+    return render(request, 'asuca/signup.html', {'signup_form': form, 'uname': request.session.get('username')})
 
 def logoutUser(request):
     logout(request)
@@ -112,40 +112,44 @@ def searchcourse(request):
     return HttpResponseRedirect(reverse('searchresult'))
 
 def searchResult(request):
-    return render(request, 'asuca/result.html', {'av': request.session.get('av'), 'cid': request.session.get('cid'),'name': request.session.get('username'), 'course': request.session.get('course'), 'prof': request.session.get('prof'), 'seats': request.session.get('seats')})
+    return render(request, 'asuca/result.html', {'av': request.session.get('av'), 'cid': request.session.get('cid'),'uname': request.session.get('username'), 'course': request.session.get('course'), 'prof': request.session.get('prof'), 'seats': request.session.get('seats')})
 
 def notifyUser(request):
     cid =request.session.get('cid')
     uname = request.session.get('username')
-    record = userinfo.objects.get(username=uname)
-    print cid
-    print record.courses
-    if int(cid) in record.courses:
-        print "Already have course in notification list"
-    else:
-        print "Added"
-        record.courses.append(cid)
-        record.save()
-
-    record = courses.objects.filter(courseid=cid).exists()
-    if(record):
-        record = courses.objects.get(courseid=cid)
-        if uname in record.users:
-            print "Already in the notification list"
+    if uname:
+        record = userinfo.objects.get(username=uname)
+        print cid
+        print record.courses
+        if int(cid) in record.courses:
+            print "Already have course in notification list"
         else:
-            print "Hello"
-            record.users.append(uname)
+            print "Added"
+            record.courses.append(cid)
             record.save()
-    else:
-        courses.objects.create(courseid=cid, term=2177, users=[uname])
+
+        record = courses.objects.filter(courseid=cid).exists()
+        if(record):
+            record = courses.objects.get(courseid=cid)
+            if uname in record.users:
+                print "Already in the notification list"
+            else:
+                print "Hello"
+                record.users.append(uname)
+                record.save()
+        else:
+            courses.objects.create(courseid=cid, term=2177, users=[uname])
 
     return HttpResponseRedirect(reverse('myCourses'))
 
 def myCourses(request):
     uname = request.session.get('username')
-    record = userinfo.objects.get(username=uname)
-    mylist = record.courses
-    return render(request, 'asuca/mycourses.html', {'mylist': mylist})
+    if uname:
+        record = userinfo.objects.get(username=uname)
+        mylist = record.courses
+    else:
+        mylist = []
+    return render(request, 'asuca/mycourses.html', {'mylist': mylist, 'uname': request.session.get('username')})
 
 def removeNotification(request):
     if request.method == 'GET':
@@ -153,17 +157,18 @@ def removeNotification(request):
         uname = request.session.get('username')
         print cid
         print uname
-        record = userinfo.objects.get(username=uname)
-        record.courses.remove(int(cid))
-        record.save()
+        if uname:
+            record = userinfo.objects.get(username=uname)
+            record.courses.remove(int(cid))
+            record.save()
 
-        record = courses.objects.get(courseid=cid)
-        record.users.remove(uname)
-        record.save()
+            record = courses.objects.get(courseid=cid)
+            record.users.remove(uname)
+            record.save()
 
-        record = courses.objects.get(courseid=cid)
-        if len(record.users) == 0:
-            record.delete()
+            record = courses.objects.get(courseid=cid)
+            if len(record.users) == 0:
+                record.delete()
 
     return HttpResponseRedirect(reverse('myCourses'))
 

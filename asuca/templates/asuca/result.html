@@ -1,13 +1,17 @@
+{% include 'asuca/header.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Search Result</title>
+    <title>Results</title>
 </head>
 
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <script src="{% static 'js/result.js' %}"></script>
+<script src="{% static 'js/home.js' %}"></script>
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
 <script>
     var seats = {{ seats }};
@@ -15,16 +19,38 @@
     var avl = {{ av }};
 </script>
 
-<body onload="result_status(seats, cid, avl)">
+<script>
+    var status = 0;
+    {% if uname %}
+        var status = 1;
+    {% endif %}
+</script>
 
-    <h3 id="av">Hi {{ name }}, Prof. {{ prof }} have {{ seats }} seats open in his {{ course }} class.</h3>
+<body onload="result_status(seats, cid, avl); login_status(status);">
+{% include 'asuca/base.html' %}
 
-    <h3 id="na">Hi {{ name }}, Unfortunately course {{ course }} doesn't have any seats open now but we can notify you as soon as it is available. Please click <b>Notify me</b> button below in order to recieve notification.</h3>
+    <div class="container bold-my-labels">
+    {% if uname %}
+        <h3 id="av">Hi {{ uname }},<br><br>Prof. {{ prof }} have {{ seats }} seats open in his {{ course }} class.</h3>
 
-    <button type="submit" onclick="location.href='{% url 'notifyUser' %}'" id="notify">Notify me</button>
-    <button type="submit" onclick="window.open('https://webapp4.asu.edu/catalog/classlist?k={{ cid }}&t=2177&e=all&hon=F')" id="reg">Register Now</button>
+        <h3 id="na">Hi {{ uname }},<br><br>Unfortunately, course {{ course }} doesn't have any seats open now but we can notify you as soon as it is available. Please click <b>Notify me</b> button below in order to recieve notification.</h3>
+
+        <button class="btn btn-primary" type="submit" onclick="location.href='{% url 'notifyUser' %}'" id="notify">Notify me</button>
+    {% endif %}
+
+    {% if not uname %}
+        <h3 id="av">Hi,<br><br>Prof. {{ prof }} have {{ seats }} seats open in his {{ course }} class.</h3>
+
+        <h3 id="na">Hi,<br><br>Unfortunately, course {{ course }} doesn't have any seats open now but we can notify you as soon as it is available. Please click <b>Notify me</b> button below in order to recieve notification.</h3>
+
+        <h3>You are not logged in. Please <a href='{% url 'loginUser' %}'>Login</a> and click on notify me to get notification for the above course.</h3>
+    {% endif %}
+
+    <button class="btn btn-primary" type="submit" onclick="window.open('https://webapp4.asu.edu/catalog/classlist?k={{ cid }}&t=2177&e=all&hon=F')" id="reg">Register Now</button>
 
     <h3 id="no_cid">Hi, Please click <a href='{% url 'home' %}'>here</a> to search the availablity of any course.</h3>
+
+    </div>
 
 </body>
 </html>
