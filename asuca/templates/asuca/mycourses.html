@@ -13,6 +13,7 @@
 <script src="{% static 'js/home.js' %}"></script>
 
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
 <script>
     var status = 0;
@@ -37,7 +38,7 @@
 {% endfor %}
 {% endif %}
     {% if mylist|length == 0 %}
-        <h3>Hi <b>{{ uname }}</b>,<br><br>Currently, you don't have any course in your notification list.</h3>
+        <h3>Currently, you don't have any course in your notification list.</h3>
     {% endif %}
 {% endif %}
 
