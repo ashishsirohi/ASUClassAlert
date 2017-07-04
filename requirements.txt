@@ -3,3 +3,6 @@ bs4
 psycopg2==2.7.1
 django==1.11.2
 social-auth-app-django
+dj-database-url==0.4.1
+gunicorn==19.6.0
+whitenoise==2.0.6

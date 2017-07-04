@@ -1,2 +1,1 @@
-python manage.py runserver
-web: python manage.py runserver
+web: gunicorn asuclassalert.wsgi --log-file -

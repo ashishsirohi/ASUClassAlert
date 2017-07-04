@@ -1,1 +1,5 @@
-*.pyc
+asuclassalert/*.pyc
+asuca/*.pyc
+env
+static
+.env
