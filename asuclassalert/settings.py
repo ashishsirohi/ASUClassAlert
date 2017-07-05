@@ -21,7 +21,6 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static'),
 ]
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 
 # Quick-start development settings - unsuitable for production
@@ -94,16 +93,18 @@ DATABASES = {
      #   'ENGINE': 'django.db.backends.sqlite3',
       #  'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     #}
+
+    
 'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME':'d1ep6vi51si3e6',
-        'USER': 'ltzxrbwxeflttl',
-        'PASSWORD': 'e41823271e2a9ac436ace68717dd9cd8542527510e61dcf5fbcbf36c07786e91',
-        'HOST': 'ec2-54-225-68-71.compute-1.amazonaws.com',
+        'NAME': 'asuca',
+        'USER': 'admin',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',
         'PORT': '5432',
-        'Database': 'd1ep6vi51si3e6',
-        'URI': 'postgres://ltzxrbwxeflttl:e41823271e2a9ac436ace68717dd9cd8542527510e61dcf5fbcbf36c07786e91@ec2-54-225-68-71.compute-1.amazonaws.com:5432/d1ep6vi51si3e6'
     }
+
+
 }
 
 
